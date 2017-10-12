@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
                     String coordinates = (String)intent.getExtras().get("coordinates");
                     Toast.makeText(MainActivity.this, coordinates, Toast.LENGTH_SHORT).show();
                     textView.append("\n" + coordinates);
-
                 }
             };
         }
@@ -64,22 +63,6 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
         if (!runtime_permission()){
             enableButtons();
         }
-
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Started", Toast.LENGTH_SHORT).show();
-                startService(new Intent(MainActivity.this, GpsService.class));
-            }
-        });
-
-        stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
-                stopService(new Intent(MainActivity.this, GpsService.class));
-            }
-        });
     }
 
     @Override
@@ -95,7 +78,7 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
     }
 
     private void enableButtons() {
-
+        start.setEnabled(true);
     }
 
     private boolean runtime_permission(){
@@ -108,4 +91,17 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
         return false;
     }
 
+    public void onStartServiceClick(View view) {
+        Toast.makeText(MainActivity.this, "Started", Toast.LENGTH_SHORT).show();
+        startService(new Intent(MainActivity.this, GpsService.class));
+        start.setEnabled(!start.isEnabled());
+        stop.setEnabled(!stop.isEnabled());
+    }
+
+    public void onStopServiceClick(View view) {
+        Toast.makeText(MainActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
+        stopService(new Intent(MainActivity.this, GpsService.class));
+        start.setEnabled(!start.isEnabled());
+        stop.setEnabled(!stop.isEnabled());
+    }
 }
